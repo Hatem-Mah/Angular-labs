@@ -1,0 +1,9 @@
+<section class="students">
+    @for (student of students; track student.id) {
+    <article class="student-card">
+        <img [ngSrc]="student.photoUrl" [alt]="student.name" width="220" height="220" />
+        <h2>{{ student.name }}</h2>
+        <p>Age: {{ student.age }}</p>
+    </article>
+    }
+</section>

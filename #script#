@@ -1,0 +1,8 @@
+ npm install bootstrap @angular/material @angular/animations
+ npm install --save bootstrap@latest @angular/material@latest @angular/animations@latest
+ npm ls bootstrap @angular/material @angular/animations --depth=0
+ cd /home/hatem/Desktop/Angular/Lab01/src/app/student && rm student.ts student.html student.css student.spec.ts && ls -la
+ cd /home/hatem/Desktop/Angular/Lab01/src/app/student && ls -1
+ find /home/hatem/Desktop/Angular/Lab01/src/app/student -maxdepth 1 -type f ! -name "*.component.*" -delete && echo "Deleted old files" && ls /home/hatem/Desktop/Angular/Lab01/src/app/student
+ cd /home/hatem/Desktop/Angular/Lab01/src/app/student && rm -f student.ts student.html student.css student.spec.ts && ls -1 *.ts
+ cd /home/hatem/Desktop/Angular/Lab01/src/app/student && rm -f student.component.ts student.component.html student.component.css student.component.spec.ts && echo "Deleted .component files" && ls -1

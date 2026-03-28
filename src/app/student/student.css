@@ -1,0 +1,31 @@
+.students {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.student-card {
+    border: 1px solid #d4d4d8;
+    border-radius: 12px;
+    padding: 0.75rem;
+    text-align: center;
+    background: #fff;
+}
+
+.student-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.student-card h2 {
+    margin: 0.75rem 0 0.25rem;
+}
+
+.student-card p {
+    margin: 0;
+}
