@@ -22,7 +22,8 @@
         <p class="status-text">Course Full</p>
         } @else if (course.seats <= 2) { <p class="status-text">Almost Full</p>
             }
-            <button type="button" (click)="register(course)" [disabled]="course.seats === 0">Register</button>
+            <button type="button" appDisableAfterClick [appDisableAfterClickCanReenable]="course.seats > 0"
+                (click)="register(course)" [disabled]="course.seats === 0">Register</button>
     </article>
     }
 </section>

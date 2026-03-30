@@ -3,11 +3,12 @@ import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Course } from '../models/course';
 import { DiscountPipe } from '../shared/pipes/discount.pipe';
+import { DisableAfterClickDirective } from '../shared/directives/disable-after-click.directive';
 
 @Component({
     selector: 'app-courses',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgOptimizedImage, FormsModule, DecimalPipe, DiscountPipe],
+    imports: [NgOptimizedImage, FormsModule, DecimalPipe, DiscountPipe, DisableAfterClickDirective],
     templateUrl: './courses.html',
     styleUrl: './courses.css',
 })
