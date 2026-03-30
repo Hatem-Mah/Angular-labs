@@ -13,6 +13,10 @@ import { DisableAfterClickDirective } from '../shared/directives/disable-after-c
     styleUrl: './courses.css',
 })
 export class CoursesComponent {
+    discountPlaygroundPrice: number | null = 1000;
+    customDiscountPercentage: number | null = 20;
+    showLockedButtonDemo = true;
+
     selectedCategory = 'All';
     categories: string[] = ['All', 'Programming', 'Design', 'Marketing', 'Business'];
 
@@ -76,9 +80,24 @@ export class CoursesComponent {
         return this.courses.filter((course) => course.category === this.selectedCategory);
     }
 
+    get playgroundPrice(): number {
+        return this.discountPlaygroundPrice ?? 0;
+    }
+
+    get playgroundDiscount(): number {
+        return this.customDiscountPercentage ?? 0;
+    }
+
     register(course: Course): void {
         if (course.seats > 0) {
             course.seats -= 1;
         }
+    }
+
+    resetLockedButtonDemo(): void {
+        this.showLockedButtonDemo = false;
+        setTimeout(() => {
+            this.showLockedButtonDemo = true;
+        }, 0);
     }
 }

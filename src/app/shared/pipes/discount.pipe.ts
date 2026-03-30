@@ -11,5 +11,5 @@ export class DiscountPipe implements PipeTransform {
 
         const safeDiscount = Math.max(0, Math.min(discountPercentage, 100));
         return value - (value * safeDiscount) / 100;
-    }
+    }  
 }

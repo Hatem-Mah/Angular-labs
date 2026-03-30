@@ -1,29 +1,112 @@
-<section class="filter-bar">
-    <label for="category">Category:</label>
-    <select id="category" [(ngModel)]="selectedCategory">
-        @for (category of categories; track category) {
-        <option [value]="category">{{ category }}</option>
-        }
-    </select>
-</section>
+<section class="demo-shell">
+    <header class="demo-hero">
+        <p class="eyebrow">Angular Playground</p>
+        <h1>Custom Pipe and Directive Demo</h1>
+        <p>Use the testers below to validate the <strong>discount</strong> pipe and
+            <strong>appDisableAfterClick</strong> directive quickly.
+        </p>
+    </header>
 
-<section class="courses">
-    @for (course of filteredCourses; track course.id) {
-    <article class="course-card" [class.course-full]="course.seats === 0"
-        [style.background-color]="course.seats <= 2 ? '#fff7ed' : '#fff'">
-        <img [ngSrc]="course.Image" [alt]="course.title" width="280" height="180" />
-        <h2>{{ course.title }}</h2>
-        <p>Instructor: {{ course.instructor }}</p>
-        <p>Original Price: ${{ course.price | number: '1.2-2' }}</p>
-        <p>Price after 10% discount: ${{ course.price | discount | number: '1.2-2' }}</p>
-        <p>Price after 20% discount: ${{ course.price | discount: 20 | number: '1.2-2' }}</p>
-        <p>Seats Available: {{ course.seats }}</p>
-        @if (course.seats === 0) {
-        <p class="status-text">Course Full</p>
-        } @else if (course.seats <= 2) { <p class="status-text">Almost Full</p>
+    <section class="playground-grid" aria-label="Custom feature playgrounds">
+        <article class="play-card pipe-card">
+            <h2>1) discount Pipe Tester</h2>
+            <p>Default discount is 10%. You can also pass a custom percentage.</p>
+
+            <div class="control-grid">
+                <label for="demo-price">Price</label>
+                <input id="demo-price" type="number" min="0" step="1" [(ngModel)]="discountPlaygroundPrice" />
+
+                <label for="demo-discount">Custom Discount (%)</label>
+                <input id="demo-discount" type="number" min="0" max="100" step="1"
+                    [(ngModel)]="customDiscountPercentage" />
+            </div>
+
+            <div class="result-list" aria-live="polite">
+                <div class="result-row">
+                    <span>Input price</span>
+                    <strong>${{ playgroundPrice | number: '1.2-2' }}</strong>
+                </div>
+                <div class="result-row">
+                    <span>{{ playgroundPrice | number: '1.2-2' }} | discount</span>
+                    <strong>${{ playgroundPrice | discount | number: '1.2-2' }}</strong>
+                </div>
+                <div class="result-row">
+                    <span>{{ playgroundPrice | number: '1.2-2' }} | discount:{{ playgroundDiscount }}</span>
+                    <strong>${{ playgroundPrice | discount: playgroundDiscount | number: '1.2-2' }}</strong>
+                </div>
+            </div>
+        </article>
+
+        <article class="play-card directive-card">
+            <h2>2) appDisableAfterClick Directive Tester</h2>
+            <p>Click each button and watch how it changes state and text.</p>
+
+            <div class="button-stack">
+                <button type="button" class="demo-btn primary" appDisableAfterClick processingText="Processing..."
+                    [reEnableDelayMs]="3000">
+                    Click me (re-enables after 3s)
+                </button>
+
+                @if (showLockedButtonDemo) {
+                <button type="button" class="demo-btn caution" appDisableAfterClick processingText="Processing..."
+                    [appDisableAfterClickCanReenable]="false">
+                    Click me (stays disabled)
+                </button>
+                }
+
+                <button type="button" class="demo-btn ghost" (click)="resetLockedButtonDemo()">
+                    Reset "stays disabled" button
+                </button>
+            </div>
+        </article>
+    </section>
+
+    <section class="catalog-shell">
+        <div class="catalog-head">
+            <div>
+                <h2>Course Catalog</h2>
+                <p class="catalog-subtitle">Each card applies the new pipe and directive.</p>
+            </div>
+
+            <div class="filter-bar">
+                <label for="category">Category</label>
+                <select id="category" [(ngModel)]="selectedCategory">
+                    @for (category of categories; track category) {
+                    <option [value]="category">{{ category }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <section class="courses">
+            @for (course of filteredCourses; track course.id) {
+            <article class="course-card" [class.course-full]="course.seats === 0"
+                [class.course-almost-full]="course.seats > 0 && course.seats <= 2">
+                <img [ngSrc]="course.Image" [alt]="course.title" width="280" height="180" />
+
+                <h3>{{ course.title }}</h3>
+                <p class="instructor">Instructor: {{ course.instructor }}</p>
+
+                <p class="price-line">Original Price: <strong>${{ course.price | number: '1.2-2' }}</strong></p>
+                <p class="price-line">10% Discount: <strong>${{ course.price | discount | number: '1.2-2' }}</strong>
+                </p>
+                <p class="price-line">20% Discount: <strong>${{ course.price | discount: 20 | number: '1.2-2'
+                        }}</strong></p>
+
+                <p class="seats">Seats Available: {{ course.seats }}</p>
+
+                @if (course.seats === 0) {
+                <p class="status-text">Course Full</p>
+                } @else if (course.seats <= 2) { <p class="status-text">Almost Full</p>
+                    }
+
+                    <button type="button" class="register-btn" appDisableAfterClick processingText="Processing..."
+                        [appDisableAfterClickCanReenable]="course.seats > 0" (click)="register(course)"
+                        [disabled]="course.seats === 0">
+                        Register
+                    </button>
+            </article>
             }
-            <button type="button" appDisableAfterClick [appDisableAfterClickCanReenable]="course.seats > 0"
-                (click)="register(course)" [disabled]="course.seats === 0">Register</button>
-    </article>
-    }
+        </section>
+    </section>
 </section>
