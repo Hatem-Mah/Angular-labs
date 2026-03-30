@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Course } from '../models/course';
 import { DiscountPipe } from '../shared/pipes/discount.pipe';
 import { DisableAfterClickDirective } from '../shared/directives/disable-after-click.directive';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
     selector: 'app-courses',
@@ -13,71 +14,31 @@ import { DisableAfterClickDirective } from '../shared/directives/disable-after-c
     styleUrl: './courses.css',
 })
 export class CoursesComponent {
+    private readonly coursesService = inject(CoursesService);
+
     discountPlaygroundPrice: number | null = 1000;
     customDiscountPercentage: number | null = 20;
     showLockedButtonDemo = true;
 
     selectedCategory = 'All';
     categories: string[] = ['All', 'Programming', 'Design', 'Marketing', 'Business'];
+    private readonly categoryIdMap: Record<string, number> = {
+        Programming: 1,
+        Marketing: 2,
+        Design: 3,
+        Business: 4,
+    };
+    private readonly allCategoryIds = [1, 2, 3, 4];
 
-    courses: Course[] = [
-        {
-            id: 1,
-            title: 'Angular Fundamentals',
-            instructor: 'Sarah Ahmed',
-            price: 49.99,
-            seats: 18,
-            Image: '/imgs/angular.svg',
-            catId: 1,
-            category: 'Programming',
-        },
-        {
-            id: 2,
-            title: 'TypeScript Essentials',
-            instructor: 'Omar Khaled',
-            price: 34.5,
-            seats: 12,
-            Image: '/imgs/typescript_5968421.png',
-            catId: 1,
-            category: 'Programming',
-        },
-        {
-            id: 3,
-            title: 'RxJS in Action',
-            instructor: 'Mona Adel',
-            price: 42,
-            seats: 2,
-            Image: '/imgs/R.png',
-            catId: 2,
-            category: 'Marketing',
-        },
-        {
-            id: 4,
-            title: 'Frontend Performance',
-            instructor: 'Youssef Nabil',
-            price: 55,
-            seats: 14,
-            Image: '/imgs/f.png',
-            catId: 2,
-            category: 'Design',
-        },
-        {
-            id: 5,
-            title: 'UI Design Basics',
-            instructor: 'Nour Hassan',
-            price: 29.99,
-            seats: 20,
-            Image: '/imgs/ui.png',
-            catId: 3,
-            category: 'Design',
-        },
-    ];
+    courses: Course[] = this.getAllCourses();
 
     get filteredCourses(): Course[] {
         if (this.selectedCategory === 'All') {
-            return this.courses;
+            return this.getAllCourses();
         }
-        return this.courses.filter((course) => course.category === this.selectedCategory);
+
+        const categoryId = this.categoryIdMap[this.selectedCategory];
+        return categoryId ? this.coursesService.getCoursesByCatID(categoryId) : [];
     }
 
     get playgroundPrice(): number {
@@ -89,8 +50,9 @@ export class CoursesComponent {
     }
 
     register(course: Course): void {
-        if (course.seats > 0) {
-            course.seats -= 1;
+        const selectedCourse = this.coursesService.getCourseByID(course.id);
+        if (selectedCourse.seats > 0) {
+            selectedCourse.seats -= 1;
         }
     }
 
@@ -99,5 +61,9 @@ export class CoursesComponent {
         setTimeout(() => {
             this.showLockedButtonDemo = true;
         }, 0);
+    }
+
+    private getAllCourses(): Course[] {
+        return this.allCategoryIds.flatMap((categoryId) => this.coursesService.getCoursesByCatID(categoryId));
     }
 }
