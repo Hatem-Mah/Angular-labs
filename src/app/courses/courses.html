@@ -1,0 +1,26 @@
+<section class="filter-bar">
+    <label for="category">Category:</label>
+    <select id="category" [(ngModel)]="selectedCategory">
+        @for (category of categories; track category) {
+        <option [value]="category">{{ category }}</option>
+        }
+    </select>
+</section>
+
+<section class="courses">
+    @for (course of filteredCourses; track course.id) {
+    <article class="course-card" [class.course-full]="course.seats === 0"
+        [style.background-color]="course.seats <= 2 ? '#fff7ed' : '#fff'">
+        <img [ngSrc]="course.Image" [alt]="course.title" width="280" height="180" />
+        <h2>{{ course.title }}</h2>
+        <p>Instructor: {{ course.instructor }}</p>
+        <p>Price: ${{ course.price }}</p>
+        <p>Seats Available: {{ course.seats }}</p>
+        @if (course.seats === 0) {
+        <p class="status-text">Course Full</p>
+        } @else if (course.seats <= 2) { <p class="status-text">Almost Full</p>
+            }
+            <button type="button" (click)="register(course)" [disabled]="course.seats === 0">Register</button>
+    </article>
+    }
+</section>

@@ -1,0 +1,52 @@
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.filter-bar select {
+    min-width: 180px;
+}
+
+.courses {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.course-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #fff;
+}
+
+.course-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.course-card h2 {
+    margin: 0.75rem 0 0.5rem;
+    font-size: 1.1rem;
+}
+
+.course-card p {
+    margin: 0.25rem 0;
+}
+
+.course-full {
+    color: #b91c1c;
+}
+
+.status-text {
+    font-weight: 600;
+}
+
+.course-card button {
+    margin-top: 0.75rem;
+}
