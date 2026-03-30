@@ -2,9 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Course } from '../models/course';
+import { Category } from '../models/category';
 import { DiscountPipe } from '../shared/pipes/discount.pipe';
 import { DisableAfterClickDirective } from '../shared/directives/disable-after-click.directive';
 import { CoursesService } from '../services/courses.service';
+import { CategoriesService } from '../services/categories.service';
 
 @Component({
     selector: 'app-courses',
@@ -15,30 +17,25 @@ import { CoursesService } from '../services/courses.service';
 })
 export class CoursesComponent {
     private readonly coursesService = inject(CoursesService);
+    private readonly categoriesService = inject(CategoriesService);
 
     discountPlaygroundPrice: number | null = 1000;
     customDiscountPercentage: number | null = 20;
     showLockedButtonDemo = true;
 
-    selectedCategory = 'All';
-    categories: string[] = ['All', 'Programming', 'Design', 'Marketing', 'Business'];
-    private readonly categoryIdMap: Record<string, number> = {
-        Programming: 1,
-        Marketing: 2,
-        Design: 3,
-        Business: 4,
-    };
-    private readonly allCategoryIds = [1, 2, 3, 4];
+    selectedCategoryId = 0;
+    categories: Category[] = this.categoriesService.getAllCategories();
+    private readonly allCategoryIds = this.categories
+        .filter((category) => category.id !== 0)
+        .map((category) => category.id);
 
     courses: Course[] = this.getAllCourses();
 
     get filteredCourses(): Course[] {
-        if (this.selectedCategory === 'All') {
+        if (this.selectedCategoryId === 0) {
             return this.getAllCourses();
         }
-
-        const categoryId = this.categoryIdMap[this.selectedCategory];
-        return categoryId ? this.coursesService.getCoursesByCatID(categoryId) : [];
+        return this.coursesService.getCoursesByCatID(this.selectedCategoryId);
     }
 
     get playgroundPrice(): number {
