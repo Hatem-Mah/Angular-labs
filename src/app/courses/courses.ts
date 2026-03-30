@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Course } from '../models/course';
+import { DiscountPipe } from '../shared/pipes/discount.pipe';
 
 @Component({
     selector: 'app-courses',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgOptimizedImage, FormsModule],
+    imports: [NgOptimizedImage, FormsModule, DecimalPipe, DiscountPipe],
     templateUrl: './courses.html',
     styleUrl: './courses.css',
 })
